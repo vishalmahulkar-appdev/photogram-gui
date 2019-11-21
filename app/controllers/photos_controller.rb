@@ -1,45 +1,63 @@
 class PhotosController < ApplicationController
   def index
-    photos = Photo.all.order({ :owner_id => :asc })
+    @photos = Photo.all.order({ :owner_id => :asc })
 
-    render({ :json => photos.as_json })
+    respond_to do |format|
+      format.html do
+        render( { :template => "/photo_templates/photo_list.html.erb"})
+      end
+
+      format.json do
+        render({ :json => @photos.as_json })
+      end
+    end
   end
 
   def show
     the_id = params.fetch(:the_photo_id)
-    photo = Photo.where({ :id => the_id }).at(0)
+    @photo = Photo.where({ :id => the_id }).at(0)
 
-    render({ :json => photo.as_json })
+    respond_to do |format|
+      format.html do
+        render( { :template => "/photo_templates/photo_details.html.erb"})
+      end
+
+      format.json do
+        render({ :json => @photo.as_json })
+      end
+    end
+
   end
 
   def create
-    photo = Photo.new
+    @photo = Photo.new
 
-    photo.owner_id = params.fetch(:input_owner_id, nil)
-    photo.caption = params.fetch(:input_caption, nil)
-    photo.image = params.fetch(:input_image, nil)
-    photo.likes_count = params.fetch(:input_likes_count, 0)
-    photo.comments_count = params.fetch(:input_comments_count, 0)
+    @photo.owner_id = params.fetch(:input_owner_id, nil)
+    @photo.caption = params.fetch(:input_caption, nil)
+    @photo.image = params.fetch(:input_image, nil)
+    @photo.likes_count = params.fetch(:input_likes_count, 0)
+    @photo.comments_count = params.fetch(:input_comments_count, 0)
     
-    photo.save
+    @photo.save
 
-    render({ :json => photo.as_json })
+    #render({ :json => @photo.as_json })
+    #redirect_to("/photos/"+@photo.id.to_s)
   end
 
   def update
     the_id = params.fetch(:the_photo_id)
-    photo = Photo.where({ :id => the_id }).at(0)
+    @photo = Photo.where({ :id => the_id }).at(0)
 
 
-    photo.owner_id = params.fetch(:input_owner_id, photo.owner_id)
-    photo.caption = params.fetch(:input_caption, photo.caption)
-    photo.image = params.fetch(:input_image, photo.image)
-    photo.likes_count = params.fetch(:input_likes_count, photo.likes_count)
-    photo.comments_count = params.fetch(:input_comments_count, photo.comments_count)
+    @photo.owner_id = params.fetch(:input_owner_id, @photo.owner_id)
+    @photo.caption = params.fetch(:input_caption, @photo.caption)
+    @photo.image = params.fetch(:input_image, @photo.image)
+    @photo.likes_count = params.fetch(:input_likes_count, @photo.likes_count)
+    @photo.comments_count = params.fetch(:input_comments_count, @photo.comments_count)
     
-    photo.save
+    @photo.save
 
-    render({ :json => photo.as_json })
+    redirect_to("/photos/"+@photo.id.to_s)
   end
 
   def destroy
@@ -48,7 +66,7 @@ class PhotosController < ApplicationController
 
     photo.destroy
 
-    render({ :json => photo.as_json })
+    redirect_to("/photos")
   end
  
   def comments

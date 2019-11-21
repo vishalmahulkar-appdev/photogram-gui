@@ -1,0 +1,57 @@
+<a href="/users">All Users</a><br>
+
+<a href="/photos">All Photos</a>
+
+<h1> List of Users </h1>
+
+<form action="/insert_user_record">
+  <div>
+    <label for="username_box">Username</label>
+    <input id="username_box" name="input_username" placeholder="Enter a username">
+
+    <input id="private" type="checkbox" name="input_private"> 
+    <label for="private">Private?</label>
+    <button>Add user</button>
+  </div>
+</form>
+
+<hr> 
+
+<table border="1">
+  <tr>
+    <th>
+      Username
+    </th>
+
+    <th>
+      Private?
+    </th>
+
+    <th>
+    </th>
+  </tr>
+
+  <% @users.each do |the_user| %>
+    <tr>
+      <td>
+        <%= the_user.username %>
+      </td>
+
+      <td>
+        <% if the_user.private %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      </td>
+
+      <td>
+        <a href="/users/<%= the_user.username %>">
+          Show Details
+        </a>
+      </td>
+    </tr>
+
+  <% end %>
+
+</table>

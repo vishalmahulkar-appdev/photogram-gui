@@ -1,0 +1,116 @@
+<a href="/users">All Users</a><br>
+
+<a href="/photos">All Photos</a>
+
+<h1> <%= @user.username %> </h1>
+
+<dl>
+  <dt>Private</dt>
+  <dd><%= @user.private.to_s %> </dd>
+  <dt>Followers</dt>
+  <dd><%= @user.followers.count %></dd>
+  <dt>Following</dt>
+  <dd><%= @user.following.count %></dd>
+  <dt>Edit user</dt>
+  <dd>
+    <form action="/update_user/<%= @user.id %>">
+      <div>
+        <label for="username_box">Username</label>
+        <input id="username_box" name="input_username" value="<%= @user.username %>">
+
+        <label for="private">Private?</label>
+        <input id="private" type="checkbox" name="input_private" 
+        <% if @user.private %> 
+          checked 
+        <% else %>
+          unchecked
+        <% end %> >
+        <button>Update user</button>
+      </div>
+    </form>
+  </dd>
+</dl>
+
+<ul>
+  <li>
+    <a href="/users/<%= @user.username %>">
+      Profile
+    </a>
+  </li>
+
+  <li>
+    <a href="/liked_photos.html.erb">
+      Liked photos
+    </a>
+  </li>
+
+  <li>
+    <a href="/users/<%= @user.username %>">
+      Feed
+    </a>
+  </li>
+
+  <li>
+    <a href="/users/<%= @user.username %>">
+      Discover
+    </a>
+  </li>
+
+</ul>
+
+<h2> Own Photos (<%= @user.own_photos.count %>) </h2>
+
+<table border="!">
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th>
+    </th>
+  </tr>
+
+  <% @user.own_photos.each do |the_photo| %>
+    <tr>
+      <td>
+        <img src="<%= the_photo.image %>">
+      </td>
+
+      <td>
+        <%= @user.username %>
+      </td>
+
+      <td>
+        <%= the_photo.caption %>
+      </td>
+
+      <td>
+        <%= the_photo.created_at %>
+      </td>
+
+      <td>
+        <%= the_photo.likes_count %>
+      </td>
+
+      <td>
+      </td>
+    </tr>
+  <% end %>
+
+  </table>
