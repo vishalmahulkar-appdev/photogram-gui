@@ -41,7 +41,7 @@ class PhotosController < ApplicationController
     @photo.save
 
     #render({ :json => @photo.as_json })
-    #redirect_to("/photos/"+@photo.id.to_s)
+    redirect_to("/photos/"+@photo.id.to_s)
   end
 
   def update
